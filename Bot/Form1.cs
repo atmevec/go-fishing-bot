@@ -13,8 +13,11 @@ namespace Bot
 {
     public partial class Form1 : Form
     {
+        //This will determine whether or not we have clicked already
         private bool clicked = false;
+        //A timer to run the screenshot process off of
         private Timer timer1;
+        //Initialize the timer
         public void InitTimer()
         {
             timer1 = new Timer();
@@ -27,39 +30,59 @@ namespace Bot
         {
             if (clicked)
             {
+                //Get the pixel from the screenshot
                 var fb = GetFourthPixel(ScreenShot(), Color.FromArgb(235, 236, 235));
+                //Check the value to our stored one
                 if (fb.HasValue)
                 {
+                    //Clear our memory to keep this from snowballing
                     memclr();
+                    //Set the position of the cursor
                     Cursor.Position = new Point(1050, 732);
+                    //Click
                     mouse_event(MOUSEEVENTF_LEFTDOWN, 1959, 732, 0, new System.IntPtr());
+                    //Wait 200 ms
                     System.Threading.Thread.Sleep(200);
+                    //Click
                     mouse_event(MOUSEEVENTF_LEFTDOWN, 1050, 732, 0, new System.IntPtr());
+                    //Let the mouse up
                     mouse_event(MOUSEEVENTF_LEFTUP, 1050, 7832, 0, new System.IntPtr());
+                    //Set the position of the cursor
                     Cursor.Position = new Point(996, 849);
+                    //Click
                     mouse_event(MOUSEEVENTF_LEFTDOWN, 996, 849, 0, new System.IntPtr());
+                    //Wait 200 ms
                     System.Threading.Thread.Sleep(200);
+                    //Click
                     mouse_event(MOUSEEVENTF_LEFTDOWN, 996, 849, 0, new System.IntPtr());
+                    //Let the mouse up
                     mouse_event(MOUSEEVENTF_LEFTUP, 996, 849, 0, new System.IntPtr());
                 }
                 else
                 {
+                    //We haven't clicked yet so check a different value
                     var pt = GetFirstPixel(ScreenShot(), Color.FromArgb(29, 55, 15));
                     if (pt.HasValue)
                     {
+                        //Collect some garbage
                         memclr();
+                        //Click
                         mouse_event(MOUSEEVENTF_LEFTDOWN, 996, 849, 0, new System.IntPtr());
                     }
                     else
                     {
+                        //We need to check for a different color value
                         var rb = GetSecondPixel(ScreenShot(), Color.FromArgb(4, 48, 176));
                         if (rb.HasValue)
                         {
+                            //Garbage
                             memclr();
+                            //Click
                             mouse_event(MOUSEEVENTF_LEFTDOWN, 996, 849, 0, new System.IntPtr());
                         }
                         else
                         {
+                            //We will check these for values and click accordingly
                             var ok = GetThirdPixel(ScreenShot(), Color.FromArgb(53, 156, 36));
                             var ok2 = GetFourthPixel(ScreenShot(), Color.FromArgb(58, 155, 40));
                             var ok3 = GetSixthPixel(ScreenShot(), Color.FromArgb(250, 164, 53));
@@ -137,29 +160,26 @@ namespace Bot
         private const int MOUSEEVENTF_LEFTDOWN = 0x02;
         private const int MOUSEEVENTF_LEFTUP = 0x04;
 
+        //When button1 is clicked
         private void button1_Click(object sender, EventArgs e)
         {
+            //Start the bot up and click
             clicked = true;
             Cursor.Position = new Point(996, 849);
             mouse_event(MOUSEEVENTF_LEFTDOWN, 996, 849, 0, new System.IntPtr());
             System.Threading.Thread.Sleep(200);
             mouse_event(MOUSEEVENTF_LEFTDOWN, 996, 849, 0, new System.IntPtr());
             mouse_event(MOUSEEVENTF_LEFTUP, 996, 849, 0, new System.IntPtr());
-            //colorsearch(ScreenShot());
-            //MessageBox.Show(Cursor.Position.ToString());
         }
 
-        private void colorsearch(Bitmap bitmap)
-        {
-            MessageBox.Show(bitmap.GetPixel(684, 803).ToString());
-
-        }
-
+        //When button2 is clicked
         private void button2_Click(object sender, EventArgs e)
         {
+            //Exit the application
             Application.Exit();
         }
 
+        //Take a screenshot!
         public Bitmap ScreenShot()
         {
             memclr();
@@ -179,6 +199,7 @@ namespace Bot
 
         private static extern int SetProcessWorkingSetSize(IntPtr process, int minimumWorkingSetSize, int maximumWorkingSetSize);
 
+        //Clear the memory
         public static void memclr()
         {
             GC.Collect();
@@ -186,6 +207,7 @@ namespace Bot
             SetProcessWorkingSetSize(System.Diagnostics.Process.GetCurrentProcess().Handle, -1, -1);
         }
 
+        //Defining all the points we want to look for from one to six
         public Point? GetFirstPixel(Bitmap bitmap, Color color)
         {
             if (bitmap.GetPixel(996, 849).Equals(color))
