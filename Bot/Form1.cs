@@ -145,6 +145,8 @@ namespace Bot
             System.Threading.Thread.Sleep(200);
             mouse_event(MOUSEEVENTF_LEFTDOWN, 996, 849, 0, new System.IntPtr());
             mouse_event(MOUSEEVENTF_LEFTUP, 996, 849, 0, new System.IntPtr());
+            //colorsearch(ScreenShot());
+            //MessageBox.Show(Cursor.Position.ToString());
         }
 
         private void colorsearch(Bitmap bitmap)
