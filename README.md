@@ -3,4 +3,4 @@ go-fishing-bot
 ==============
 
 
-A bot designed for a (now out-of-date) version of the Facebook game, Go Fishing.
+A bot designed for a (now out-of-date) version of the Facebook game, Go Fishing, written in C#.
